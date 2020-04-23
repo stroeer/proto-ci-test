@@ -6,7 +6,7 @@ option go_package = "github.com/stroeer/tapir";
 package core;
 
 message Article {
-  string id = 1;
+  int32 id = 1;
   string web_url = 2;
   string canonical_url = 3;
   ContentType type = 4;
