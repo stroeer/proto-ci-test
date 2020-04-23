@@ -1,4 +1,4 @@
-name: buf check
+name: Publish package to GitHub Packages
 on:
   pull_request:
     branches:
@@ -8,9 +8,22 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout pull_request
-        uses: actions/checkout@v2
-      - name: Setup buf
-        run: ./install_buf.sh
-      - name: buf check breaking
-        run: ./buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml
+      - uses: actions/checkout@v2
+      - name: Setup protoc
+        run: install_buf.sh
+      - name: buf check
+        id: buf_check
+        run: |
+            ./buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml > message.txt
+            exitcode=$?
+            echo "##[set-output name=message;]$(cat message.txt)"
+            echo "##[set-output name=status;]$(echo $exitcode)"
+      - if: steps.buf_check.outputs.status > 0
+        run: echo "Something went wrong"
+        name: comment PR
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: ${{ steps.buf_check.outputs.message }}
+          check_for_duplicate_msg: false  # OPTIONAL 
