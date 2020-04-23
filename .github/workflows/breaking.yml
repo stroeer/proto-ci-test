@@ -12,4 +12,4 @@ jobs:
       - name: Setup buf
         run: ./install_buf.sh
       - name: buf check breaking
-        run: buf check breaking --against-input '.git#branch=master' --input-config buf.yaml
+        run: ./buf check breaking --against-input '.git#branch=master' --input-config buf.yaml
