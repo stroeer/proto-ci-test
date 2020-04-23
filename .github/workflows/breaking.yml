@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup protoc
-        run: install_buf.sh
+        run: ./install_buf.sh
       - name: buf check
         id: buf_check
         run: |
