@@ -1,4 +1,4 @@
-name: Publish package to GitHub Packages
+name: buf check
 on:
   pull_request:
     branches:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup protoc
-        run: install_buf.sh
+      - name: Setup buf
+        run: ./install_buf.sh
       - name: buf check breaking
         run: buf check breaking --against-input '.git#branch=master' --input-config buf.yaml
