@@ -14,11 +14,9 @@ jobs:
       - name: buf check
         id: buf_check
         run: |
-            ./buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml > message.txt
-            exitcode=$?
+            ./buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml > message.txt || true
             echo "::set-output name=message::$(cat message.txt)"
-            echo "::set-output name=status::$(echo 1)"
-            exit 0
+            echo "::set-output name=status::$(wc -l message.txt)"
       - if: steps.buf_check.outputs.status > 0
         name: comment PR
         uses: unsplash/comment-on-pr@master
