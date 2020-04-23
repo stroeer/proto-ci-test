@@ -16,7 +16,7 @@ jobs:
         run: |
             ./buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml > message.txt || true
             echo "::set-output name=message::$(cat message.txt)"
-            if [ $(wc -l < message.txt) ]; then
+            if [ -s message.txt ]; then
               echo ::set-output name=failed::'true';
             fi
       - if: steps.buf_check.outputs.failed == 'true'
