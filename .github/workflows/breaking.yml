@@ -8,13 +8,9 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout master
-        uses: actions/checkout@v2
-        with:
-          ref: refs/heads/master
       - name: checkout pull_request
         uses: actions/checkout@v2
       - name: Setup buf
         run: ./install_buf.sh
       - name: buf check breaking
-        run: ./buf check breaking --against-input '.git#branch=master' --input-config buf.yaml
+        run: ./buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml
