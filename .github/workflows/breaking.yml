@@ -19,7 +19,6 @@ jobs:
             echo "##[set-output name=message;]$(cat message.txt)"
             echo "##[set-output name=status;]$(echo $exitcode)"
       - if: steps.buf_check.outputs.status > 0
-        run: echo "Something went wrong"
         name: comment PR
         uses: unsplash/comment-on-pr@master
         env:
