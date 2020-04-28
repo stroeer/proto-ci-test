@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     container: bufbuild/buf
     steps:
+      - name: docker login
+        run: docker login docker.pkg.github.com -u $DOCKER_USER -p $DOCKER_PASSWORD
+        env:
+          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_USER: ${{ github.actor }}
       - uses: actions/checkout@v2
       - name: buf check
         id: buf_check
