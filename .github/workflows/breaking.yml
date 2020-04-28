@@ -7,14 +7,13 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    container: bufbuild/buf
     steps:
       - uses: actions/checkout@v2
-      - name: Setup protoc
-        run: ./install_buf.sh
       - name: buf check
         id: buf_check
         run: |
-            ./buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml > message.txt || true
+            buf check breaking --against-input 'https://github.com/stroeer/proto-ci-test.git#branch=master' --input-config buf.yaml > message.txt || true
             echo "::set-output name=message::$(cat message.txt)"
             if [ -s message.txt ]; then
               echo ::set-output name=failed::'true';
